@@ -169,7 +169,6 @@ closeButton.addEventListener('click', () => {
 });
 
 enableSync.onclick = () => {
-  noteDiv.classList.toggle('visible');
   browser.runtime.sendMessage({
     action: 'authenticate',
     context: getPadStats()
@@ -245,3 +244,17 @@ function getPadStats() {
 // Create a connection with the background script to handle open and
 // close events.
 browser.runtime.connect();
+
+chrome.runtime.onMessage.addListener(eventData => {
+  switch (eventData.action) {
+    case 'authenticated':
+      if (eventData.err) {
+        enableSync.textContent = 'Login Failed...';
+      } else if (eventData.bearer) {
+        enableSync.textContent = 'Synced';
+        enableSync.disabled = true;
+      }
+
+      break;
+  }
+});
