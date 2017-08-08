@@ -242,6 +242,19 @@ function getPadStats() {
   };
 }
 
+// On selection show a context menu item that copies the selected contents to notes
+browser.contextMenus.create({
+  id: 'copyselection',
+  title: 'Copy selection to notes',
+  contexts: ['selection']
+});
+
+browser.contextMenus.onClicked.addListener(({ selectionText }) => {
+  // Subtracting by 1 causes quill to crash on successive copies
+  const lastIndex = quill.getLength() - 2;
+  quill.insertText(lastIndex, '\n\n' + selectionText);
+});
+
 // Create a connection with the background script to handle open and
 // close events.
 browser.runtime.connect();

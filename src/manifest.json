@@ -23,6 +23,7 @@
 
   "permissions": [
     "storage",
+    "contextMenus",
     "https://ssl.google-analytics.com/collect"
   ],
 
